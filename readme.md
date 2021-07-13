@@ -21,29 +21,6 @@ $ composer require haixin/getui
 
 Please see the [changelog](changelog.md) for more information on what has changed recently.
 
-## Testing
-
-``` bash
-$ composer test
-```
-
-## Contributing
-
-Please see [contributing.md](contributing.md) for details and a todolist.
-
-## Security
-
-If you discover any security related issues, please email nirvana488939@gmail.com instead of using the issue tracker.
-
-## Credits
-
-- [Hai Xin][link-author]
-- [All Contributors][link-contributors]
-
-## License
-
-license. Please see the [license file](license.md) for more information.
-
 [ico-version]: https://img.shields.io/packagist/v/haixin/getui.svg?style=flat-square
 [ico-downloads]: https://img.shields.io/packagist/dt/haixin/getui.svg?style=flat-square
 [ico-travis]: https://img.shields.io/travis/haixin/getui/master.svg?style=flat-square
