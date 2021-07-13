@@ -1,15 +1,15 @@
 {
     "name": "haixin/getui",
-    "description": "",
-    "license": "license",
+    "description": "getui for laravel",
+    "license": "MIT",
     "authors": [
         {
             "name": "HaiXin",
-            "email": "nirvana488939@gmail.com",
-            "homepage": "https://sunhaixin.com"
+            "email": "",
+            "homepage": "https://github.com/sunmingyang/getui"
         }
     ],
-    "homepage": "https://github.com/haixin/getui",
+    "homepage": "https://github.com/sunmingyang/getui",
     "keywords": ["Laravel", "GeTui"],
     "require": {
         "illuminate/support": "~7|~8"
