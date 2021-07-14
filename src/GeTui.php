@@ -5,7 +5,6 @@ namespace HaiXin\GeTui;
 use Illuminate\Config\Repository as Config;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
-use Psr\Http\Message\ResponseInterface;
 
 /**
  * Class GeTui
@@ -23,10 +22,6 @@ use Psr\Http\Message\ResponseInterface;
  */
 class GeTui
 {
-    public Config $config;
-    public Token  $token;
-    public string $basicUri;
-    public string $timestamp;
     protected static array $provider = [
         'alias'     => Alias::class,
         'tags'      => Tags::class,
@@ -38,6 +33,10 @@ class GeTui
         'single'    => Single::class,
         'pipeline'  => Pipeline::class,
     ];
+    public Config          $config;
+    public Token           $token;
+    public string          $basicUri;
+    public string          $timestamp;
     
     public function __construct(array $config)
     {
@@ -88,16 +87,12 @@ class GeTui
         throw new \RuntimeException("{$name}不存在");
     }
     
-    public function isSuccess($response): bool
+    public function isSuccess(array $response): bool
     {
-        if ($response instanceof ResponseInterface) {
-            $response = $this->toArray($response);
-        }
-        
         return $response['code'] === 0;
     }
     
-    public function toArray(ResponseInterface $response, $key = null)
+    public function toArray($response, $key = null)
     {
         if ($key !== null) {
             $key = Str::start($key, 'data.');
@@ -110,5 +105,12 @@ class GeTui
         }
         
         return $data;
+    }
+    
+    public function toDate($date, $format = null): string
+    {
+        $date = new \DateTime(is_numeric($date) ? date('Y-m-d H:i:s', $date) : $date);
+        
+        return $date->format($format ?? 'Y-m-d');
     }
 }

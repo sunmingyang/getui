@@ -6,7 +6,6 @@ namespace HaiXin\GeTui\Report;
 
 use HaiXin\GeTui\GeTui;
 use HaiXin\GeTui\Traits\HasRequest;
-use Illuminate\Support\Carbon;
 
 class Day
 {
@@ -29,18 +28,7 @@ class Day
      */
     public function get($date): array
     {
-        switch (true) {
-            case is_numeric($date) && strlen($date) === 10;
-                $date = Carbon::createFromTimestamp($date);
-                break;
-            case is_string($date):
-                $date = Carbon::parse($date);
-                break;
-            case $date instanceof \DateTime:
-        }
-        
-        $date = $date->format('Y-m-d');
-        
+        $date     = $this->app->toDate($date);
         $response = $this->request("/report/push/date/{$date}");
         
         return $this->app->toArray($response, $date);
