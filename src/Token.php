@@ -3,8 +3,9 @@
 
 namespace HaiXin\GeTui;
 
+use GuzzleHttp\Client;
+use GuzzleHttp\RequestOptions;
 use HaiXin\GeTui\Traits\Signature;
-use Illuminate\Support\Facades\Http;
 
 class Token
 {
@@ -39,18 +40,18 @@ class Token
         }
         
         if (empty($this->token)) {
-            $response = Http::asJson()
-                            ->post($this->app->url('auth'), [
-                                'sign'      => $this->signature(),
-                                'timestamp' => $this->timestamp(),
-                                'appkey'    => $this->app->config->get('key'),
-                            ])
-                            ->json();
+            $client = new Client();
             
-            if ($this->app->isSuccess($response)) {
-                $this->token = $response['data']['token'];
-                $this->cache->set($this->key, $this->token, 86400);
-            }
+            $response = $client->post($this->app->url('auth'), [
+                RequestOptions::JSON => [
+                    'sign'      => $this->signature(),
+                    'timestamp' => $this->timestamp(),
+                    'appkey'    => $this->app->config->get('key'),
+                ],
+            ])->getBody()->getContents();
+            
+            $this->token = $this->app->toArray(json_decode($response, true), 'data.token');
+            $this->cache->set($this->key, $this->token, 86400);
         }
         
         return $this->token;
