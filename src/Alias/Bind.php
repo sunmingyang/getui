@@ -4,9 +4,9 @@
 namespace HaiXin\GeTui\Alias;
 
 
+use GuzzleHttp\RequestOptions;
 use HaiXin\GeTui\GeTui;
 use HaiXin\GeTui\Traits\HasRequest;
-use GuzzleHttp\RequestOptions;
 
 class Bind
 {
@@ -30,6 +30,10 @@ class Bind
     public function get($input): bool
     {
         $data = [];
+        
+        if (func_num_args() === 2) {
+            $input = [$input => func_get_arg(1)];
+        }
         
         foreach ($input as $cid => $alias) {
             $data[] = compact('cid', 'alias');
