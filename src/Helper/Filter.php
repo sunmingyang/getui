@@ -29,14 +29,7 @@ class Filter
                     $opt = 'and';
             }
             
-            $keys = [
-                'phone'    => 'phone_type',
-                'region'   => 'region',
-                'portrait' => 'portrait',
-                'tag'      => 'custom_tag',
-            ];
-            
-            return $this->where($keys[strtolower($key)], $params, $opt);
+            return $this->where($key, $params, $opt);
         }
         
         throw new \RuntimeException("{$name}不存在");
@@ -48,8 +41,15 @@ class Filter
             $value = $opt;
             $opt   = 'and';
         }
+    
+        $keys = [
+            'phone'    => 'phone_type',
+            'region'   => 'region',
+            'portrait' => 'portrait',
+            'tag'      => 'custom_tag',
+        ];
         
-        $this->filter[] = ['key' => $key, 'values' => (array) $value, 'opt_type' => $opt];
+        $this->filter[] = ['key' => $keys[strtolower($key)], 'values' => (array) $value, 'opt_type' => $opt];
         
         return $this;
     }
