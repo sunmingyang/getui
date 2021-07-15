@@ -85,8 +85,12 @@ class Token
      *
      * @return string
      */
-    public function key(): string
+    public function key($key = null): string
     {
+        if($key !== null){
+            $this->key = $key;
+        }
+    
         return $this->key;
     }
 }
