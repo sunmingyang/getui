@@ -2,9 +2,12 @@
 
 namespace HaiXin\GeTui;
 
+use DateTime;
 use Illuminate\Config\Repository as Config;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
+use Psr\Http\Message\ResponseInterface;
+use RuntimeException;
 
 /**
  * Class GeTui
@@ -84,11 +87,15 @@ class GeTui
             return new self::$provider[$name]($this);
         }
         
-        throw new \RuntimeException("{$name}不存在");
+        throw new RuntimeException("{$name}不存在");
     }
     
-    public function isSuccess(array $response): bool
+    public function isSuccess($response): bool
     {
+        if ($response instanceof ResponseInterface) {
+            $response = $this->toArray($response);
+        }
+        
         return $response['code'] === 0;
     }
     
@@ -109,7 +116,7 @@ class GeTui
     
     public function toDate($date, $format = null): string
     {
-        $date = new \DateTime(is_numeric($date) ? date('Y-m-d H:i:s', $date) : $date);
+        $date = new DateTime(is_numeric($date) ? date('Y-m-d H:i:s', $date) : $date);
         
         return $date->format($format ?? 'Y-m-d');
     }
