@@ -28,10 +28,13 @@ $pusher = resolve('getui');
 ```php
 $token = $pusher->token;
 
-// token缓存的key
+// token缓存的 key
 $token->key();
 
-// 获取token
+// 可以更换缓存的 key
+$token->key($key);
+
+// 获取 token
 $token->get(); 
 
 // 销毁 token（仅销毁当前生命周期内，不请求 api）
@@ -272,7 +275,7 @@ $alias->submit();
 
 ## 更新日志
 
-Please see the [changelog](changelog.md) for more information on what has changed recently.
+[更新日志](changelog.md)
 
 [ico-version]: https://img.shields.io/packagist/v/haixin/getui.svg?style=flat-square
 [ico-downloads]: https://img.shields.io/packagist/dt/haixin/getui.svg?style=flat-square
