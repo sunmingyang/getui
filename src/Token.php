@@ -6,6 +6,7 @@ namespace HaiXin\GeTui;
 use GuzzleHttp\Client;
 use GuzzleHttp\RequestOptions;
 use HaiXin\GeTui\Traits\Signature;
+use Psr\SimpleCache\CacheInterface;
 
 class Token
 {
@@ -16,10 +17,10 @@ class Token
     protected ?string $token;
     protected         $cache;
     
-    public function __construct(GeTui $app)
+    public function __construct(GeTui $app, CacheInterface $cache = null)
     {
         $this->app   = $app;
-        $this->cache = resolve('cache');
+        $this->cache = $cache ?? app('cache');
         $this->refresh();
     }
     

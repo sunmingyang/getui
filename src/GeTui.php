@@ -41,17 +41,17 @@ class GeTui
     public string          $basicUri;
     public string          $timestamp;
     
-    public function __construct(array $config)
+    public function __construct(array $config, $cache = null)
     {
-        $this->init($config);
+        $this->init($config, $cache);
     }
     
-    protected function init(array $config): void
+    protected function init(array $config,  $cache): void
     {
         $this->timestamp();
         $this->initConfig($config);
         $this->initBasicUri();
-        $this->initToken();
+        $this->initToken($cache);
     }
     
     public function timestamp()
@@ -69,9 +69,9 @@ class GeTui
         $this->basicUri = "https://restapi.getui.com/v2/{$this->config['id']}";
     }
     
-    protected function initToken(): void
+    protected function initToken( $cache): void
     {
-        $this->token = new Token($this);
+        $this->token = new Token($this, $cache);
     }
     
     public function url($path): string
