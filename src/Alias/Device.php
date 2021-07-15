@@ -26,10 +26,10 @@ class Device
      * @example  Push::alias->device(alias)
      * @link     https://docs.getui.com/getui/server/rest_v2/user/#doc-title-3
      */
-    public function get($alias): array
+    public function get($alias): string
     {
         $response = $this->request("/user/cid/alias/{$alias}");
         
-        return $this->app->toArray($response, 'cid');
+        return $this->app->toArray($response, 'cid.0');
     }
 }
