@@ -7,6 +7,7 @@ namespace HaiXin\GeTui\Traits;
 use HaiXin\GeTui\GeTui;
 use HaiXin\GeTui\Helper\Audience;
 use HaiXin\GeTui\Helper\Channel;
+use HaiXin\GeTui\Helper\Filter;
 use HaiXin\GeTui\Helper\Message;
 use HaiXin\GeTui\Helper\Setting;
 
@@ -83,6 +84,10 @@ trait Payload
             $this->container['audience'] = $audience;
             
             return $this;
+        }
+        
+        if ($audience instanceof Filter) {
+            $function = 'filter';
         }
         
         if ($function === null) {
