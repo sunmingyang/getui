@@ -7,9 +7,7 @@ use Exception;
 use HaiXin\GeTui\Helper\Audience;
 use HaiXin\GeTui\Helper\Channel;
 use HaiXin\GeTui\Helper\Message;
-use Illuminate\Cache\CacheManager;
 use Illuminate\Config\Repository as Config;
-use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\Str;
 use RuntimeException;
 
@@ -194,7 +192,7 @@ class GeTui
     /**
      * 获取缓存实例
      *
-     * @return CacheManager|Application|mixed|CacheInterface
+     * @return
      */
     public function getCache()
     {
@@ -207,11 +205,11 @@ class GeTui
     /**
      * 设置缓存实例
      *
-     * @param  CacheInterface  $cache
+     * @param    $cache
      *
      * @return $this
      */
-    public function setCache(Cache $cache): GeTui
+    public function setCache($cache): GeTui
     {
         $this->cache = $cache;
         

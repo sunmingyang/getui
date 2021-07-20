@@ -24,17 +24,12 @@ artisan vendor:publish --provider="HaiXin\GeTui\GeTuiServiceProvider"
 
 ```php
 $pusher = resolve('getui');
-
-$gt = new GeTui($config);
-
-// 默认使用 laravel 的 cache，如果想更换cache
-$pusher->setCache(Psr\SimpleCache\CacheInterface $cache);
 ```
 
 ### token
 
 ```php
-$token = $pusher->token;
+$token = $pusher->getToken();
 
 // token缓存的 key
 $token->key();
@@ -45,7 +40,7 @@ $token->key($key);
 // 获取 token
 $token->get(); 
 
-// 销毁 token（仅销毁当前生命周期内，不请求 api）
+// 销毁 token (请求接口销毁)
 $token->destroy(); 
 
 // 非强制的话，重新从缓存加载。缓存不存在请求接口；强制的话直接请求接口
@@ -88,24 +83,6 @@ $tags->more(tag,[device1,device2,device3,...]);
 // 一批设备解绑一个标签（指定设备解绑指定标签）
 $tags->unbind(tag,[device1,device2,device3,...]);
 ```
-
-### filter
-
-```php
-$filter = new \HaiXin\GeTui\Helper\Filter();
-
-// 仅支持以下 4种方式
-// 'phone'=> 'phone_type',
-// 'region' => 'region',
-// 'portrait' => 'portrait',
-// 'tag'=> 'custom_tag',
-$filter->where('phone','ios')// and
- ->whereOr('phone','ios')// or
- ->whereNot('phone','ios')// not
- ->wherePhone('ios');// and
-```
-
-
 
 ### user
 
@@ -163,8 +140,6 @@ $report->user('2020-01-01');
 $report->online();
 ```
 
-
-
 ### task
 
 ```php
@@ -183,7 +158,75 @@ $task->destroy(task);
 $task->progress(device,task);
 ```
 
-### broadcast
+### filter
+
+```php
+$filter = new \HaiXin\GeTui\Helper\Filter();
+
+// 仅支持以下 4种方式
+// 'phone'=> 'phone_type',
+// 'region' => 'region',
+// 'portrait' => 'portrait',
+// 'tag'=> 'custom_tag',
+$filter->where('phone','ios')// and
+ ->where('phone',['ios','android'])
+ ->whereOr('phone','ios')// or
+ ->whereNot('phone','ios')// not
+ ->wherePhone('ios');// and
+```
+
+### message
+
+```php
+$message = $pusher->message();
+
+$message->title();
+$message->body();
+...
+$pusher->message($message);
+
+use HaiXin\GeTui\Helper\Message;
+$pusher->message(function(Message $message){
+  $message->title();
+  $message->body();
+  ...
+});
+```
+
+### channel
+
+```php
+$channel = $pusher->channel();
+
+$channel->title();
+$channel->body();
+...
+$pusher->channel($channel);
+
+use HaiXin\GeTui\Helper\Channel;
+$pusher->channel(function(Channel $channel){
+  $channel->title();
+  $channel->body();
+  ...
+});
+```
+
+### audience
+
+```php
+$audience = $pusher->audience();
+
+$audience->device($device);
+$pusher->audience($audience);
+
+use HaiXin\GeTui\Helper\Audience;
+$pusher->audience(function(Audience $audience){
+	$audience->device($device);
+  ...
+});
+```
+
+###broadcast
 
 ```php
 $broadcast = $pusher->broadcast;
@@ -250,8 +293,6 @@ $single->alias->audience->device(device)
   ->extras(extras)
   ->submit(); 
 ```
-
-
 
 ### pipeline
 
