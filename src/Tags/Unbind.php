@@ -4,13 +4,16 @@
 namespace HaiXin\GeTui\Tags;
 
 
+use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\RequestOptions;
 use HaiXin\GeTui\GeTui;
 use HaiXin\GeTui\Traits\HasRequest;
-use GuzzleHttp\RequestOptions;
+use HaiXin\GeTui\Traits\HasResponse;
 
 class Unbind
 {
     use HasRequest;
+    use HasResponse;
     
     protected GeTui $app;
     
@@ -24,7 +27,7 @@ class Unbind
      * @param $device
      *
      * @return array
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      * @example Push::tags->unbind(tag, [device,device,device])
      * @link    https://docs.getui.com/getui/server/rest_v2/user/#doc-title-8
      */
@@ -34,6 +37,6 @@ class Unbind
             'delete',
             [RequestOptions::JSON => ['cid' => $device]]);
         
-        return $this->app->toArray($response);
+        return $this->toArray($response);
     }
 }

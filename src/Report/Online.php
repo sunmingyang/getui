@@ -4,12 +4,15 @@
 namespace HaiXin\GeTui\Report;
 
 
+use GuzzleHttp\Exception\GuzzleException;
 use HaiXin\GeTui\GeTui;
 use HaiXin\GeTui\Traits\HasRequest;
+use HaiXin\GeTui\Traits\HasResponse;
 
 class Online
 {
     use HasRequest;
+    use HasResponse;
     
     protected GeTui $app;
     
@@ -20,7 +23,7 @@ class Online
     
     /**
      * @return bool
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      * @example Push::report->online()
      * @link    https://docs.getui.com/getui/server/rest_v2/report/#doc-title-6
      */
@@ -28,6 +31,6 @@ class Online
     {
         $response = $this->request('/report/online_user');
         
-        return $this->app->toArray($response);
+        return $this->toArray($response);
     }
 }

@@ -4,12 +4,15 @@
 namespace HaiXin\GeTui\Report;
 
 
+use GuzzleHttp\Exception\GuzzleException;
 use HaiXin\GeTui\GeTui;
 use HaiXin\GeTui\Traits\HasRequest;
+use HaiXin\GeTui\Traits\HasResponse;
 
 class Task
 {
     use HasRequest;
+    use HasResponse;
     
     protected GeTui $app;
     
@@ -22,7 +25,7 @@ class Task
      * @param $task
      *
      * @return array
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      * @example Push::report->task(task,task,task)
      * @example Push::report->task([task,task,task]])
      * @link    https://docs.getui.com/getui/server/rest_v2/report/#doc-title-1
@@ -36,6 +39,6 @@ class Task
         $response = $this->request(
             sprintf('/report/push/task/%s', implode(',', $task)), 'get');
         
-        return $this->app->toArray()($response);
+        return $this->toArray($response);
     }
 }

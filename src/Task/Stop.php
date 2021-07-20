@@ -4,12 +4,15 @@
 namespace HaiXin\GeTui\Task;
 
 
+use GuzzleHttp\Exception\GuzzleException;
 use HaiXin\GeTui\GeTui;
 use HaiXin\GeTui\Traits\HasRequest;
+use HaiXin\GeTui\Traits\HasResponse;
 
 class Stop
 {
     use HasRequest;
+    use HasResponse;
     
     protected GeTui $app;
     
@@ -22,7 +25,7 @@ class Stop
      * @param $task
      *
      * @return bool
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      * @example Push::task->stop(task)
      * @link    https://docs.getui.com/getui/server/rest_v2/push/?id=doc-title-8#doc-title-11
      */
@@ -30,6 +33,6 @@ class Stop
     {
         $response = $this->request("/task/{$task}", 'DELETE');
         
-        return $this->app->isSuccess($response);
+        return $this->isSuccess($response);
     }
 }

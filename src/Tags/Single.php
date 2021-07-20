@@ -4,13 +4,16 @@
 namespace HaiXin\GeTui\Tags;
 
 
+use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\RequestOptions;
 use HaiXin\GeTui\GeTui;
 use HaiXin\GeTui\Traits\HasRequest;
-use GuzzleHttp\RequestOptions;
+use HaiXin\GeTui\Traits\HasResponse;
 
 class Single
 {
     use HasRequest;
+    use HasResponse;
     
     protected GeTui $app;
     
@@ -24,7 +27,7 @@ class Single
      * @param  array   $tags
      *
      * @return bool
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      * @example Push::tags->single(device,[tag,tag,tag])
      * @link    https://docs.getui.com/getui/server/rest_v2/user/#doc-title-6
      */
@@ -34,6 +37,6 @@ class Single
             'post',
             [RequestOptions::JSON => ['custom_tag' => $tags]]);
         
-        return $this->app->isSuccess($response);
+        return $this->isSuccess($response);
     }
 }

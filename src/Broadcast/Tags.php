@@ -4,14 +4,13 @@
 namespace HaiXin\GeTui\Broadcast;
 
 
+use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\RequestOptions;
+use HaiXin\GeTui\Abstracts\Broadcast;
 use HaiXin\GeTui\Helper\Audience;
 use HaiXin\GeTui\Helper\Channel;
 use HaiXin\GeTui\Helper\Message;
 use HaiXin\GeTui\Helper\Setting;
-use HaiXin\GeTui\Traits\HasRequest;
-use HaiXin\GeTui\Traits\Payload;
-use HaiXin\GeTui\Traits\Simple;
-use GuzzleHttp\RequestOptions;
 
 /**
  * Class Tags
@@ -22,14 +21,10 @@ use GuzzleHttp\RequestOptions;
  * @property Setting  $setting
  * @package HaiXin\GeTui\Broadcast
  */
-class Tags
+class Tags extends Broadcast
 {
-    use Payload;
-    use HasRequest;
-    use Simple;
-    
     /**
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      * @example
      *          $broadcast = Push::broadcast->tags->audience($tag,
      *          'tag')->extras($extras)->title($title)->body($body)->submit(tag);
@@ -37,8 +32,8 @@ class Tags
      */
     public function submit()
     {
-        $response = $this->request('/push/all', 'POST', [RequestOptions::JSON => $this->toArray()]);
+        $response = $this->request('/push/all', 'POST', [RequestOptions::JSON => $this->serialize()]);
         
-        return $this->app->toArray($response, 'taskid');
+        return $this->toArray($response, 'taskid');
     }
 }

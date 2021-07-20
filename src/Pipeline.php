@@ -9,8 +9,9 @@ use HaiXin\GeTui\Traits\Bus;
 
 /**
  * Class Pipeline
+ *
  * @property Device $device
- * @property Alias $alias
+ * @property Alias  $alias
  * @package HaiXin\GeTui
  */
 class Pipeline

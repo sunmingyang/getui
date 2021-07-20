@@ -3,19 +3,31 @@
 
 namespace HaiXin\GeTui\Helper;
 
-use HaiXin\GeTui\Traits\Rebound;
+use HaiXin\GeTui\Interfaces\NotPushInterface;
 
-class Audience
+class Audience implements NotPushInterface
 {
-    use Rebound;
-    
+    protected $app;
     protected $audience;
     
+    /**
+     * Audience constructor.
+     *
+     * @param $app
+     */
+    public function __construct($app)
+    {
+        $this->app = $app;
+    }
+    
+    /**
+     * 发送给所有设备
+     *
+     * @return mixed
+     */
     public function all()
     {
-        $this->to('all');
-        
-        return $this->app;
+        return $this->to('all');
     }
     
     protected function to($value, $category = null)
@@ -29,32 +41,52 @@ class Audience
         return $this->app;
     }
     
+    /**
+     * 根据设备编号发送
+     *
+     * @param $device
+     *
+     * @return mixed
+     */
     public function device($device)
     {
-        $this->to($device, 'cid');
-        
-        return $this->app;
+        return $this->to($device, 'cid');
     }
     
+    /**
+     * 根据别名发送
+     *
+     * @param $alias
+     *
+     * @return mixed
+     */
     public function alias($alias)
     {
-        $this->to($alias, 'alias');
-        
-        return $this->app;
+        return $this->to($alias, 'alias');
     }
     
+    /**
+     * 根据条件过滤发送
+     *
+     * @param  Filter  $filter
+     *
+     * @return mixed
+     */
     public function filter(Filter $filter)
     {
-        $this->to($filter->toArray(), 'tag');
-        
-        return $this->app;
+        return $this->to($filter->toArray(), 'tag');
     }
     
+    /**
+     * 根据标签发送
+     *
+     * @param $tag
+     *
+     * @return mixed
+     */
     public function tags($tag)
     {
-        $this->to($tag, 'fast_custom_tag');
-        
-        return $this->app;
+        return $this->to($tag, 'fast_custom_tag');
     }
     
     public function get()

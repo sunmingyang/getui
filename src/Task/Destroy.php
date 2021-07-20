@@ -4,12 +4,15 @@
 namespace HaiXin\GeTui\Task;
 
 
+use GuzzleHttp\Exception\GuzzleException;
 use HaiXin\GeTui\GeTui;
 use HaiXin\GeTui\Traits\HasRequest;
+use HaiXin\GeTui\Traits\HasResponse;
 
 class Destroy
 {
     use HasRequest;
+    use HasResponse;
     
     protected GeTui $app;
     
@@ -22,7 +25,7 @@ class Destroy
      * @param $task
      *
      * @return bool
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      * @example Push::task->destroy(task)
      * @link    https://docs.getui.com/getui/server/rest_v2/push/?id=doc-title-8#doc-title-13
      */
@@ -30,6 +33,6 @@ class Destroy
     {
         $response = $this->request("/task/schedule/{$task}", 'DELETE');
         
-        return $this->app->isSuccess($response);
+        return $this->isSuccess($response);
     }
 }

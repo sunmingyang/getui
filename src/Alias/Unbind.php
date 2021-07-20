@@ -4,13 +4,16 @@
 namespace HaiXin\GeTui\Alias;
 
 
+use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\RequestOptions;
 use HaiXin\GeTui\GeTui;
 use HaiXin\GeTui\Traits\HasRequest;
-use GuzzleHttp\RequestOptions;
+use HaiXin\GeTui\Traits\HasResponse;
 
 class Unbind
 {
     use HasRequest;
+    use HasResponse;
     
     protected GeTui $app;
     
@@ -23,9 +26,9 @@ class Unbind
      * @param $input
      *
      * @return bool
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      * @example  Push::alias->unbind([cid => alias])
-     * @link https://docs.getui.com/getui/server/rest_v2/user/#doc-title-5
+     * @link     https://docs.getui.com/getui/server/rest_v2/user/#doc-title-5
      */
     public function get($input): bool
     {
@@ -41,6 +44,6 @@ class Unbind
         
         $response = $this->request('/user/alias', 'delete', [RequestOptions::JSON => ['data_list' => $data]]);
         
-        return $this->app->isSuccess($response);
+        return $this->isSuccess($response);
     }
 }

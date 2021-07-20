@@ -4,12 +4,15 @@
 namespace HaiXin\GeTui\Report;
 
 
+use GuzzleHttp\Exception\GuzzleException;
 use HaiXin\GeTui\GeTui;
 use HaiXin\GeTui\Traits\HasRequest;
+use HaiXin\GeTui\Traits\HasResponse;
 
 class Day
 {
     use HasRequest;
+    use HasResponse;
     
     protected GeTui $app;
     
@@ -22,7 +25,7 @@ class Day
      * @param $date
      *
      * @return array
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      * @example Push::report->day(2020-01-01)
      * @link    https://docs.getui.com/getui/server/rest_v2/report/#doc-title-3
      */
@@ -31,6 +34,6 @@ class Day
         $date     = $this->app->toDate($date);
         $response = $this->request("/report/push/date/{$date}");
         
-        return $this->app->toArray($response, $date);
+        return $this->toArray($response, $date);
     }
 }

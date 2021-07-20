@@ -18,6 +18,7 @@ use HaiXin\GeTui\Traits\Bus;
  * @method array device(string $alias) 通过传入的别名查询对应的cid信息
  * @method bool unbind(array $datum) $datum: [cid => alias] 批量解除别名与cid的关系
  * @method bool destroy(array $alias) 解绑所有与该别名绑定的cid
+ *
  * @package HaiXin\GeTui
  */
 class Alias

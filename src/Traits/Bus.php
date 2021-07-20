@@ -5,6 +5,7 @@ namespace HaiXin\GeTui\Traits;
 
 
 use HaiXin\GeTui\GeTui;
+use RuntimeException;
 
 trait Bus
 {
@@ -26,7 +27,7 @@ trait Bus
     {
         $name = strtolower($name);
         if (isset($this->providers[$name]) === false) {
-            throw new \RuntimeException('GeTui.'.class_basename(__CLASS__).".{$name}不存在");
+            throw new RuntimeException('GeTui.'.class_basename(__CLASS__).".{$name}不存在");
         }
         
         if (isset($this->workers[$name]) === false) {

@@ -4,12 +4,15 @@
 namespace HaiXin\GeTui\User;
 
 
+use GuzzleHttp\Exception\GuzzleException;
 use HaiXin\GeTui\GeTui;
 use HaiXin\GeTui\Traits\HasRequest;
+use HaiXin\GeTui\Traits\HasResponse;
 
 class Unblack
 {
     use HasRequest;
+    use HasResponse;
     
     protected GeTui $app;
     
@@ -22,10 +25,10 @@ class Unblack
      * @param $devices
      *
      * @return array
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      * @example Push::user->unblack(device,device)
      * @example Push::user->unblack([device,device])
-     * @link https://docs.getui.com/getui/server/rest_v2/user/#doc-title-11
+     * @link    https://docs.getui.com/getui/server/rest_v2/user/#doc-title-11
      */
     public function get($devices): bool
     {
@@ -34,8 +37,8 @@ class Unblack
         }
         
         $response = $this->request(
-            sprintf('/user/black/cid/%s', implode(',', $devices)), 'DELETE');
-
-        return $this->app->isSuccess($response);
+            sprintf('/user/black/cid/%s', implode(',', array_unique($devices))), 'DELETE');
+        
+        return $this->isSuccess($response);
     }
 }

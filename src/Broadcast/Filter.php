@@ -4,42 +4,39 @@
 namespace HaiXin\GeTui\Broadcast;
 
 
+use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\RequestOptions;
+use HaiXin\GeTui\Abstracts\Broadcast;
 use HaiXin\GeTui\Helper\Audience;
 use HaiXin\GeTui\Helper\Channel;
 use HaiXin\GeTui\Helper\Message;
 use HaiXin\GeTui\Helper\Setting;
-use HaiXin\GeTui\Traits\HasRequest;
-use HaiXin\GeTui\Traits\Payload;
-use HaiXin\GeTui\Traits\Simple;
-use GuzzleHttp\RequestOptions;
 
 /**
  * Class Filter
+ *
  * @property Audience $audience
  * @property Message  $message
  * @property Channel  $channel
  * @property Setting  $setting
  * @package HaiXin\GeTui\Broadcast
  */
-class Filter
+class Filter extends Broadcast
 {
-    use HasRequest;
-    use Payload;
-    use Simple;
-    
     /**
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      * @example
      *          $filter = (new
      *          Filter())->wherePhone()->whereOrRegion()->whereNotTag()->wherePortrait()->wherePortrait();
      *          $broadcast =
-     *          Push::broadcast->filter->audience($filter, 'filter')->extras($extras)->title($title)->body($body)->submit($filter);
+     *          Push::broadcast->filter->audience($filter,
+     *          'filter')->extras($extras)->title($title)->body($body)->submit($filter);
      * @link    https://docs.getui.com/getui/server/rest_v2/push/#doc-title-9
      */
     public function submit()
     {
-        $response = $this->request('/push/tag', 'POST', [RequestOptions::JSON => $this->toArray()]);
+        $response = $this->request('/push/tag', 'POST', [RequestOptions::JSON => $this->serialize()]);
         
-        return $this->app->toArray($response, 'taskid');
+        return $this->toArray($response, 'taskid');
     }
 }

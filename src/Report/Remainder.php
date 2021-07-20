@@ -4,12 +4,15 @@
 namespace HaiXin\GeTui\Report;
 
 
+use GuzzleHttp\Exception\GuzzleException;
 use HaiXin\GeTui\GeTui;
 use HaiXin\GeTui\Traits\HasRequest;
+use HaiXin\GeTui\Traits\HasResponse;
 
 class Remainder
 {
     use HasRequest;
+    use HasResponse;
     
     protected GeTui $app;
     
@@ -20,7 +23,7 @@ class Remainder
     
     /**
      * @return array
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      * @example Push::report->remainder()
      * @link    https://docs.getui.com/getui/server/rest_v2/report/#doc-title-4
      */
@@ -28,6 +31,6 @@ class Remainder
     {
         $response = $this->request('/report/push/count');
         
-        return $this->app->toArray($response);
+        return $this->toArray($response);
     }
 }

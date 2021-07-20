@@ -10,6 +10,7 @@ use HaiXin\GeTui\Helper\Channel;
 use HaiXin\GeTui\Helper\Filter;
 use HaiXin\GeTui\Helper\Message;
 use HaiXin\GeTui\Helper\Setting;
+use RuntimeException;
 
 /**
  * Trait Payload
@@ -25,6 +26,7 @@ trait Payload
     protected $app;
     protected $sequence;
     protected $group;
+    protected $extras;
     protected $container = [];
     protected $module    = [
         'audience' => Audience::class,
@@ -37,9 +39,7 @@ trait Payload
     {
         $this->app = $app;
         
-        foreach ($this->module as $key => $value) {
-            $this->__get($key);
-        }
+        $this->__get('setting');
     }
     
     public function __get($name)
@@ -49,52 +49,104 @@ trait Payload
         }
         
         if (isset($this->module[$name]) === true) {
-            $this->container[$name] = new $this->module[$name]($this);
+            $this->container[$name] = new $this->module[$name]($this->app);
             
             return $this->container[$name];
         }
         
-        throw new \RuntimeException("{$name} 不存在");
+        throw new RuntimeException("{$name} 不存在");
     }
     
-    public function message(Message $message): Payload
+    public function extras(array $extras, $click = null, bool $mustString = true): self
     {
-        $this->container['message'] = $message;
+        if ($mustString === true) {
+            foreach ($extras as $index => $datum) {
+                $extras[$index] = (string) $datum;
+            }
+        }
+        
+        $this->__get('message')->extras($extras, $click);
+        $this->__get('channel')->extras($extras, $click);
         
         return $this;
     }
     
-    public function channel(Channel $channel): Payload
+    public function title($title): self
     {
-        $this->container['channel'] = $channel;
+        $this->__get('message')->title($title);
+        $this->__get('channel')->title($title);
         
         return $this;
     }
     
-    public function setting(Setting $setting): Payload
+    public function body($body): self
     {
-        $this->container['setting'] = $setting;
+        $this->__get('message')->body($body);
+        $this->__get('channel')->body($body);
+        
+        return $this;
+    }
+    
+    public function message($message): self
+    {
+        if (is_callable($message) === true) {
+            $message($this->__get('message'));
+        }
+        
+        if ($message instanceof Message) {
+            $this->container['message'] = $message;
+        }
+        
+        return $this;
+    }
+    
+    public function channel($channel): self
+    {
+        if (is_callable($channel) === true) {
+            $channel($this->__get('channel'));
+        }
+        
+        if ($channel instanceof Channel) {
+            $this->container['channel'] = $channel;
+        }
+        
+        return $this;
+    }
+    
+    public function setting($setting): self
+    {
+        if (is_callable($setting) === true) {
+            $setting($this->__get('setting'));
+        }
+        
+        if ($setting instanceof Setting) {
+            $this->container['setting'] = $setting;
+        }
         
         return $this;
     }
     
     public function audience($audience, $function = null): self
     {
-        if ($audience instanceof Audience) {
-            $this->container['audience'] = $audience;
-            
-            return $this;
+        switch (true) {
+            case is_callable($audience) === true:
+                $audience($this->__get('audience'));
+                break;
+            case $audience instanceof Audience:
+                $this->container['audience'] = $audience;
+                break;
+            default:
+                if ($audience instanceof Filter) {
+                    $function = 'filter';
+                }
+                
+                if ($function === null) {
+                    $function = strtolower(class_basename(static::class));
+                }
+                
+                $this->__get('audience')->{$function}($audience);
+                break;
         }
-        
-        if ($audience instanceof Filter) {
-            $function = 'filter';
-        }
-        
-        if ($function === null) {
-            $function = strtolower(class_basename(__CLASS__));
-        }
-        
-        $this->__get('audience')->{$function}($audience);
         
         return $this;
     }
@@ -113,10 +165,10 @@ trait Payload
         return $this;
     }
     
-    public function toArray(): array
+    public function serialize(): array
     {
-        if (isset($this->container['audience']) === false) {
-            throw new \RuntimeException('请设置 audience');
+        if (isset($this->container['audience']) === false && strtolower(class_basename(__CLASS__)) !== 'group') {
+            throw new RuntimeException('请设置 audience');
         }
         
         $data = [

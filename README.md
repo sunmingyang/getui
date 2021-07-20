@@ -11,9 +11,12 @@
 
 ## 安装
 
-``` bash
+``` php
 $ composer require haixin/getui
+```
+编辑 config/surl.php
 
+``` php
 artisan vendor:publish --provider="HaiXin\GeTui\GeTuiServiceProvider"
 ```
 
@@ -21,6 +24,11 @@ artisan vendor:publish --provider="HaiXin\GeTui\GeTuiServiceProvider"
 
 ```php
 $pusher = resolve('getui');
+
+$gt = new GeTui($config);
+
+// 默认使用 laravel 的 cache，如果想更换cache
+$pusher->setCache(Psr\SimpleCache\CacheInterface $cache);
 ```
 
 ### token
@@ -50,7 +58,7 @@ $token->refresh($force = false);
 $alias = $pusher->alias;
 
 // 设备与别名绑定；单一绑定
-$alias->bind(cid，alias);
+$alias->bind(cid，alias));
 
 // 设备与别名绑定；批量绑定
 $alias->bind([cid => alias]);
@@ -99,12 +107,12 @@ $filter->where('phone','ios')// and
 
 
 
-user
+### user
 
 ``` php
 $user = $pusher->user;
 
-$user->count($filter);
+$user->count(\HaiXin\GeTui\Helper\Filter $filter);
 // 查询用户信息
 $user->detail(device1,device2,device3,...); 
 $user->detail([device1,device2,device3,...]); 
@@ -185,7 +193,7 @@ $broadcast->all->extras($extras)
   ->title($title)
   ->body($body)
   ->submit();
-
+  
 // 推送给指定标签的用户
 $broadcast->tags->extras($extras)
   ->title($title)
@@ -197,7 +205,7 @@ $broadcast->tags->extras($extras)
 $broadcast->filter->extras($extras)
   ->title($title)
   ->body($body)
-  ->audience($filter)
+  ->audience(\HaiXin\GeTui\Helper\Filter $filter)
   ->submit(); 
 ```
 

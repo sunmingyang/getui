@@ -4,12 +4,15 @@
 namespace HaiXin\GeTui\Report;
 
 
+use GuzzleHttp\Exception\GuzzleException;
 use HaiXin\GeTui\GeTui;
 use HaiXin\GeTui\Traits\HasRequest;
+use HaiXin\GeTui\Traits\HasResponse;
 
 class Group
 {
     use HasRequest;
+    use HasResponse;
     
     protected GeTui $app;
     
@@ -22,7 +25,7 @@ class Group
      * @param $group
      *
      * @return array
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      * @example Push::report->group(group)
      * @link    https://docs.getui.com/getui/server/rest_v2/report/#doc-title-2
      */
@@ -30,6 +33,6 @@ class Group
     {
         $response = $this->request("/report/push/task_group/{$group}");
         
-        return $this->app->toArray($response);
+        return $this->toArray($response);
     }
 }

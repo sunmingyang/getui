@@ -8,9 +8,8 @@ use HaiXin\GeTui\Helper\Audience;
 use HaiXin\GeTui\Helper\Channel;
 use HaiXin\GeTui\Helper\Message;
 use HaiXin\GeTui\Helper\Setting;
-use HaiXin\GeTui\Traits\HasRequest;
+use HaiXin\GeTui\Traits\HasRequest;use HaiXin\GeTui\Traits\HasResponse;
 use HaiXin\GeTui\Traits\Payload;
-use HaiXin\GeTui\Traits\Simple;
 use GuzzleHttp\RequestOptions;
 
 /**
@@ -23,9 +22,8 @@ use GuzzleHttp\RequestOptions;
  */
 class All
 {
-    use HasRequest;
+    use HasRequest;use HasResponse;
     use Payload;
-    use Simple;
     
     /**
      * @throws \GuzzleHttp\Exception\GuzzleException
@@ -35,8 +33,8 @@ class All
     public function submit()
     {
         $this->audience->all();
-        $response = $this->request('/push/all', 'POST', [RequestOptions::JSON => $this->toArray()]);
+        $response = $this->request('/push/all', 'POST', [RequestOptions::JSON => $this->serialize()]);
         
-        return $this->app->toArray($response, 'taskid');
+        return $this->toArray($response, 'taskid');
     }
 }

@@ -10,14 +10,16 @@ use HaiXin\GeTui\Traits\Bus;
 
 /**
  * Class Group
+ *
  * @property Create $create
  * @property Device $device
- * @property Alias $alias
+ * @property Alias  $alias
  * @package HaiXin\GeTui
  */
 class Group
 {
     use Bus;
+    
     protected array $providers = [
         'create' => Create::class,
         'device' => Device::class,

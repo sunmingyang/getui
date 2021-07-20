@@ -4,12 +4,15 @@
 namespace HaiXin\GeTui\User;
 
 
+use GuzzleHttp\Exception\GuzzleException;
 use HaiXin\GeTui\GeTui;
 use HaiXin\GeTui\Traits\HasRequest;
+use HaiXin\GeTui\Traits\HasResponse;
 
 class State
 {
     use HasRequest;
+    use HasResponse;
     
     protected GeTui $app;
     
@@ -22,10 +25,10 @@ class State
      * @param $devices
      *
      * @return array
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      * @example Push::user->state(device,device)
      * @example Push::user->state([device,device])
-     * @link https://docs.getui.com/getui/server/rest_v2/user/#doc-title-12
+     * @link    https://docs.getui.com/getui/server/rest_v2/user/#doc-title-12
      */
     public function get($devices): array
     {
@@ -34,8 +37,8 @@ class State
         }
         
         $response = $this->request(
-            sprintf('/user/status/%s', implode(',', $devices)), 'get');
+            sprintf('/user/status/%s', implode(',', array_unique($devices))), 'get');
         
-        return $this->app->toArray($response);
+        return $this->toArray($response);
     }
 }

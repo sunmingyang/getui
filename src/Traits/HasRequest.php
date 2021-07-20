@@ -1,11 +1,10 @@
 <?php
 
-
 namespace HaiXin\GeTui\Traits;
-
 
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\RequestOptions;
 use GuzzleHttp\Utils;
@@ -22,11 +21,11 @@ trait HasRequest
         ],
     ];
     /**
-     * @var \GuzzleHttp\ClientInterface
+     * @var ClientInterface
      */
     protected $httpClient;
     /**
-     * @var \GuzzleHttp\HandlerStack
+     * @var HandlerStack
      */
     protected $handlerStack;
     
@@ -57,9 +56,9 @@ trait HasRequest
      * @param  string  $method
      * @param  array   $options
      *
-     * @return \Psr\Http\Message\ResponseInterface
+     * @return ResponseInterface
      *
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
     public function request(string $url, string $method = 'GET', array $options = []): ResponseInterface
     {
@@ -68,7 +67,7 @@ trait HasRequest
         $options = array_merge(
             self::$defaults,
             $options,
-            [RequestOptions::HEADERS => ['token' => $this->app->token->get()],],
+            [RequestOptions::HEADERS => ['token' => $this->app->getToken()->get()],],
             ['handler' => $this->getHandlerStack()]
         );
         
@@ -84,7 +83,7 @@ trait HasRequest
     /**
      * Build a handler stack.
      *
-     * @return \GuzzleHttp\HandlerStack
+     * @return HandlerStack
      */
     public function getHandlerStack(): HandlerStack
     {
@@ -98,7 +97,7 @@ trait HasRequest
     }
     
     /**
-     * @param  \GuzzleHttp\HandlerStack  $handlerStack
+     * @param  HandlerStack  $handlerStack
      *
      * @return $this
      */
@@ -158,7 +157,7 @@ trait HasRequest
     /**
      * Set GuzzleHttp\Client.
      *
-     * @param  \GuzzleHttp\ClientInterface  $httpClient
+     * @param  ClientInterface  $httpClient
      *
      * @return $this
      */

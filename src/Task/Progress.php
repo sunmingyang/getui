@@ -4,12 +4,15 @@
 namespace HaiXin\GeTui\Task;
 
 
+use GuzzleHttp\Exception\GuzzleException;
 use HaiXin\GeTui\GeTui;
 use HaiXin\GeTui\Traits\HasRequest;
+use HaiXin\GeTui\Traits\HasResponse;
 
 class Progress
 {
     use HasRequest;
+    use HasResponse;
     
     protected GeTui $app;
     
@@ -23,7 +26,7 @@ class Progress
      * @param $task
      *
      * @return array
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      * @example Push::task->progress(device, task)
      * @link    https://docs.getui.com/getui/server/rest_v2/push/?id=doc-title-8#doc-title-14
      */
@@ -31,6 +34,6 @@ class Progress
     {
         $response = $this->request("/task/detail/{$device}/{$task}");
         
-        return $this->app->toArray($response);
+        return $this->toArray($response, 'deatil');
     }
 }

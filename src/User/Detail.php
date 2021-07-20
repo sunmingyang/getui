@@ -4,12 +4,15 @@
 namespace HaiXin\GeTui\User;
 
 
+use GuzzleHttp\Exception\GuzzleException;
 use HaiXin\GeTui\GeTui;
 use HaiXin\GeTui\Traits\HasRequest;
+use HaiXin\GeTui\Traits\HasResponse;
 
 class Detail
 {
     use HasRequest;
+    use HasResponse;
     
     protected GeTui $app;
     
@@ -22,10 +25,10 @@ class Detail
      * @param $devices
      *
      * @return array
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      * @example Push::user->detail(device,device)
      * @example Push::user->detail([device,device])
-     * @link https://docs.getui.com/getui/server/rest_v2/user/#doc-title-13
+     * @link    https://docs.getui.com/getui/server/rest_v2/user/#doc-title-13
      */
     public function get($devices): array
     {
@@ -36,6 +39,6 @@ class Detail
         $response = $this->request(
             sprintf('/user/detail/%s', implode(',', $devices)), 'get');
         
-        return $this->app->toArray($response);
+        return $this->toArray($response, 'validCids');
     }
 }

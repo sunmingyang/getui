@@ -4,12 +4,16 @@
 namespace HaiXin\GeTui\User;
 
 
-use HaiXin\GeTui\GeTui;
+use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\RequestOptions;
+use HaiXin\GeTui\GeTui;
 use HaiXin\GeTui\Traits\HasRequest;
+use HaiXin\GeTui\Traits\HasResponse;
+
 class Badge
 {
     use HasRequest;
+    use HasResponse;
     
     protected GeTui $app;
     
@@ -23,17 +27,17 @@ class Badge
      * @param  array  $devices
      *
      * @return bool
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      * @example Push::user->badge(badge, [device,device,device])
-     * @link https://docs.getui.com/getui/server/rest_v2/user/#doc-title-14
+     * @link    https://docs.getui.com/getui/server/rest_v2/user/#doc-title-14
      */
     public function get($badge, array $devices): bool
     {
         $response = $this->request(
-            sprintf('/user/badge/cid/%s', implode(',', $devices)),
+            sprintf('/user/badge/cid/%s', implode(',', array_unique($devices))),
             'post',
             [RequestOptions::JSON => ['badge' => $badge]]);
         
-        return $this->app->isSuccess($response);
+        return $this->isSuccess($response);
     }
 }
