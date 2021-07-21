@@ -53,7 +53,7 @@ $token->refresh($force = false);
 $alias = $pusher->alias;
 
 // 设备与别名绑定；单一绑定
-$alias->bind(cid，alias));
+$alias->bind(cid,alias);
 
 // 设备与别名绑定；批量绑定
 $alias->bind([cid => alias]);
@@ -62,7 +62,7 @@ $alias->bind([cid => alias]);
 $alias->device(cid);
 
 // 解除设备与别名的绑定关系
-$alias->unbind(cid，alias);
+$alias->unbind(cid,alias);
 $alias->unbind([cid => alias]);
 
 // 解除所有与该别名绑定的设备
@@ -269,7 +269,7 @@ $group->device->audience([device1,device2,device3])
   ->submit(); 
 
 // 推送给指定别名
-group->alias->audience([device1,device2,device3])
+$group->alias->audience([device1,device2,device3])
   ->task(task)
   ->submit(); 
 ```
@@ -319,7 +319,6 @@ $alias->audience(alias)
 }
 $alias->submit(); 
 ```
-
 
 
 ## 更新日志
