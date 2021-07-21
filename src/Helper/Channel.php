@@ -141,12 +141,12 @@ class Channel
         if (is_array($params) === true) {
             $params = Utils::jsonEncode($params, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
         }
+    
+        $this->ios('payload', $params);
         
         if ($click === 'intent') {
             $params = sprintf($this->app->getConfig('intent'), $params);
         }
-        
-        $this->ios('payload', $params);
         $this->android('click_type', $click);
         $this->android($click, $params);
         
