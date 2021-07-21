@@ -40,6 +40,12 @@ trait Payload
         $this->app = $app;
         
         $this->__get('setting');
+        
+        foreach ($this->module as $name => $value) {
+            if ($this->app->has($name) === true) {
+                $this->{$name}($this->app->{$name}());
+            }
+        }
     }
     
     public function __get($name)
@@ -55,6 +61,31 @@ trait Payload
         }
         
         throw new RuntimeException("{$name} 不存在");
+    }
+    
+    public function has($name)
+    {
+        return $this->__isset($name);
+    }
+    
+    public function __isset($name)
+    {
+        return isset($this->container[$name]);
+    }
+    
+    public function message($message = null)
+    {
+        switch (true) {
+            case $message === null:
+                return $this->container['message'];
+            case is_callable($message) === true:
+                $message($this->__get('message'));
+                break;
+            case $message instanceof Message:
+                $this->container['message'] = $message;
+        }
+        
+        return $this;
     }
     
     public function extras(array $extras, $click = null, bool $mustString = true): self
@@ -87,48 +118,41 @@ trait Payload
         return $this;
     }
     
-    public function message($message): self
-    {
-        if (is_callable($message) === true) {
-            $message($this->__get('message'));
-        }
-        
-        if ($message instanceof Message) {
-            $this->container['message'] = $message;
-        }
-        
-        return $this;
-    }
-    
-    public function channel($channel): self
-    {
-        if (is_callable($channel) === true) {
-            $channel($this->__get('channel'));
-        }
-        
-        if ($channel instanceof Channel) {
-            $this->container['channel'] = $channel;
-        }
-        
-        return $this;
-    }
-    
-    public function setting($setting): self
-    {
-        if (is_callable($setting) === true) {
-            $setting($this->__get('setting'));
-        }
-        
-        if ($setting instanceof Setting) {
-            $this->container['setting'] = $setting;
-        }
-        
-        return $this;
-    }
-    
-    public function audience($audience, $function = null): self
+    public function channel($channel = null)
     {
         switch (true) {
+            case $channel === null:
+                return $this->container['channel'];
+            case is_callable($channel) === true:
+                $channel($this->__get('channel'));
+                break;
+            case $channel instanceof Channel:
+                $this->container['channel'] = $channel;
+        }
+        
+        return $this;
+    }
+    
+    public function setting($setting)
+    {
+        switch (true) {
+            case $setting === null:
+                return $this->container['setting'];
+            case is_callable($setting) === true:
+                $setting($this->__get('setting'));
+                break;
+            case $setting instanceof Setting:
+                $this->container['setting'] = $setting;
+        }
+        
+        return $this;
+    }
+    
+    public function audience($audience = null, $function = null)
+    {
+        switch (true) {
+            case func_num_args() === 0:
+                return $this->container['audience'];
             case is_callable($audience) === true:
                 $audience($this->__get('audience'));
                 break;

@@ -4,12 +4,9 @@ namespace HaiXin\GeTui;
 
 use DateTime;
 use Exception;
-use HaiXin\GeTui\Helper\Audience;
-use HaiXin\GeTui\Helper\Channel;
-use HaiXin\GeTui\Helper\Message;
+use HaiXin\GeTui\Traits\Payload;
 use Illuminate\Config\Repository as Config;
 use Illuminate\Support\Str;
-use RuntimeException;
 
 /**
  * Class GeTui
@@ -27,8 +24,21 @@ use RuntimeException;
  */
 class GeTui
 {
+    use Payload {
+        Payload::__get as getPayload;
+    }
+    
+    /** @var Token */
+    protected $token;
+    protected $cache;
+    /** @var string */
+    protected $basicUri;
+    /** @var string */
+    protected $timestamp;
+    /** @var Config */
+    protected $config;
     /** @var array|string[] */
-    protected static array $provider = [
+    protected array $provider = [
         'alias'     => Alias::class,
         'tags'      => Tags::class,
         'user'      => User::class,
@@ -39,16 +49,6 @@ class GeTui
         'single'    => Single::class,
         'pipeline'  => Pipeline::class,
     ];
-    /** @var Token */
-    public $token;
-    
-    public $cache;
-    /** @var string */
-    protected $basicUri;
-    /** @var string */
-    protected $timestamp;
-    /** @var Config */
-    protected $config;
     
     public function __construct(array $config)
     {
@@ -156,24 +156,6 @@ class GeTui
     }
     
     /**
-     * 魔术方法
-     *
-     * @param $name
-     *
-     * @return mixed
-     */
-    public function __get($name)
-    {
-        $name = strtolower($name);
-        
-        if (isset(self::$provider[$name]) === true) {
-            return new self::$provider[$name]($this);
-        }
-        
-        throw new RuntimeException("{$name}不存在");
-    }
-    
-    /**
      * 时间处理
      *
      * @param        $date
@@ -237,18 +219,14 @@ class GeTui
         $this->token = new Token($this);
     }
     
-    public function message(): Message
+    public function __get($name)
     {
-        return new Message($this);
-    }
-    
-    public function channel(): Channel
-    {
-        return new Channel($this);
-    }
-    
-    public function audience(): Audience
-    {
-        return new Audience($this);
+        $name = strtolower($name);
+        
+        if (isset($this->provider[$name]) === true) {
+            return new $this->provider[$name]($this);
+        }
+        
+        return $this->getPayload($name);
     }
 }
