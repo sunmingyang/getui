@@ -5,22 +5,10 @@ namespace HaiXin\GeTui\User;
 
 
 use GuzzleHttp\Exception\GuzzleException;
-use HaiXin\GeTui\GeTui;
-use HaiXin\GeTui\Traits\HasRequest;
-use HaiXin\GeTui\Traits\HasResponse;
+use HaiXin\GeTui\Abstracts\NotPush;
 
-class Tags
+class Tags extends NotPush
 {
-    use HasRequest;
-    use HasResponse;
-    
-    protected GeTui $app;
-    
-    public function __construct(GeTui $app)
-    {
-        $this->app = $app;
-    }
-    
     /**
      * @param $device
      *

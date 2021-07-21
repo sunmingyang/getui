@@ -5,13 +5,11 @@ namespace HaiXin\GeTui\Single;
 
 
 use GuzzleHttp\RequestOptions;
+use HaiXin\GeTui\Abstracts\Single;
 use HaiXin\GeTui\Helper\Audience;
 use HaiXin\GeTui\Helper\Channel;
 use HaiXin\GeTui\Helper\Message;
 use HaiXin\GeTui\Helper\Setting;
-use HaiXin\GeTui\Traits\HasRequest;
-use HaiXin\GeTui\Traits\HasResponse;
-use HaiXin\GeTui\Traits\Payload;
 
 /**
  * Class Alias
@@ -22,12 +20,8 @@ use HaiXin\GeTui\Traits\Payload;
  * @property Setting  $setting
  * @package HaiXin\GeTui\Single
  */
-class Alias
+class Alias extends Single
 {
-    use HasRequest;
-    use HasResponse;
-    use Payload;
-    
     /**
      * @throws \GuzzleHttp\Exception\GuzzleException
      * @example $broadcast =

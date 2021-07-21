@@ -4,27 +4,24 @@
 namespace HaiXin\GeTui\Broadcast;
 
 
+use GuzzleHttp\RequestOptions;
+use HaiXin\GeTui\Abstracts\Broadcast;
 use HaiXin\GeTui\Helper\Audience;
 use HaiXin\GeTui\Helper\Channel;
 use HaiXin\GeTui\Helper\Message;
 use HaiXin\GeTui\Helper\Setting;
-use HaiXin\GeTui\Traits\HasRequest;use HaiXin\GeTui\Traits\HasResponse;
-use HaiXin\GeTui\Traits\Payload;
-use GuzzleHttp\RequestOptions;
 
 /**
  * Class All
+ *
  * @property Audience $audience
  * @property Message  $message
  * @property Channel  $channel
  * @property Setting  $setting
  * @package HaiXin\GeTui\Broadcast
  */
-class All
+class All extends Broadcast
 {
-    use HasRequest;use HasResponse;
-    use Payload;
-    
     /**
      * @throws \GuzzleHttp\Exception\GuzzleException
      * @example $broadcast = Push::broadcast->all->extras($extras)->title($title)->body($body)->submit();

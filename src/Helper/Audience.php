@@ -5,7 +5,7 @@ namespace HaiXin\GeTui\Helper;
 
 use HaiXin\GeTui\Interfaces\NotPushInterface;
 
-class Audience implements NotPushInterface
+class Audience
 {
     protected $app;
     protected $audience;

@@ -6,7 +6,7 @@ namespace HaiXin\GeTui\Helper;
 use GuzzleHttp\Utils;
 use HaiXin\GeTui\Interfaces\NotPushInterface;
 
-class Message implements NotPushInterface
+class Message
 {
     protected $app;
     protected $level;

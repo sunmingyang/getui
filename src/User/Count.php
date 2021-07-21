@@ -6,23 +6,11 @@ namespace HaiXin\GeTui\User;
 
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\RequestOptions;
-use HaiXin\GeTui\GeTui;
+use HaiXin\GeTui\Abstracts\NotPush;
 use HaiXin\GeTui\Helper\Filter;
-use HaiXin\GeTui\Traits\HasRequest;
-use HaiXin\GeTui\Traits\HasResponse;
 
-class Count
+class Count extends NotPush
 {
-    use HasRequest;
-    use HasResponse;
-    
-    protected GeTui $app;
-    
-    public function __construct(GeTui $app)
-    {
-        $this->app = $app;
-    }
-    
     /**
      * @param  Filter  $filter
      *
