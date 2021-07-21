@@ -15,6 +15,8 @@ return [
         //        'mz'      => 4, // 魅族
         //        'op'      => 4, // oppo
     ],
-    'intent'   => 'intent:#Intent;action=android.intent.action.gtpush;component=com.wh.wang.scroopclassproject/.gtpush.OpenClickActivity;S.gttask=;S.payload=%s;end'
-    //    'intent' => 'intent:#Intent;launchFlags=0x10000000;action=android.intent.action.gtpush;package=com.getui.demo;component=com.getui.demo/com.getui.demo.TestActivity;f.floatType=1.0;l.longType=1;B.booleanType=true;S.stringType=string;d.doubleType=1.0;i.intType=1;end'
+    /**
+     * 自定义内容会替换%
+     */
+    'intent'   => 'intent:#Intent;launchFlags=0x10000000;action=android.intent.action.gtpush;package=com.getui.demo;component=com.getui.demo/com.getui.demo.TestActivity;f.floatType=1.0;l.longType=1;B.booleanType=true;S.stringType=string;d.doubleType=1.0;i.intType=1;S.payload=%;send',
 ];
